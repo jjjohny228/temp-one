@@ -1,0 +1,25 @@
+name: Notify Telegram on Push or Merge
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  notifyTelegram:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: "${{ secrets.TELEGRAM_CHAT_ID }}"
+          token: "${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          message: |
+            🚀 Репозиторий: ${{ github.repository }}
+            👤 Действие: ${{ github.event_name }}
+            ✍️ Автор: ${{ github.actor }}
+            🔄 Будь ласка, витягніть останні зміни:
+            git checkout main && git pull origin main
