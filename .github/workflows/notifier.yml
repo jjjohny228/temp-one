@@ -36,7 +36,7 @@ jobs:
           message: |
             🚀 Репозиторий: ${{ github.repository }}
             
-            👤 Действие: ${{ github.event_name }} в ветку ${{ github.ref }}
+            👤 Действие: ${{ github.event_name }} в ветку ${{ github.ref_name }}
             
             ✍️ Автор: ${{ github.actor }}
             
