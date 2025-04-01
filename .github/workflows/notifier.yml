@@ -36,10 +36,14 @@ jobs:
           message: |
             🚀 Репозиторий: ${{ github.repository }}
             
-            👤 Действие: ${{ github.event_name }}
+            👤 Действие: ${{ github.event_name }} в ветку ${{ github.ref }}
             
             ✍️ Автор: ${{ github.actor }}
             
             ${{ env.MESSAGE_TYPE == 'PR' && format('📌 PR Title: {0}\n📝 PR Description: {1}', github.event.pull_request.title, github.event.pull_request.body) || format('📝 Commit Title: {0}', github.event.head_commit.message) }}
             
             🔗 [Коммит](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+
+            🔄 Пора забрать последние изменения:
+            
+            git checkout main && git pull origin main
