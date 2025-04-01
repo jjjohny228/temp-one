@@ -19,7 +19,16 @@ jobs:
           token: "${{ secrets.TELEGRAM_BOT_TOKEN }}"
           message: |
             🚀 Репозиторий: ${{ github.repository }}
+            
             👤 Действие: ${{ github.event_name }}
+            
             ✍️ Автор: ${{ github.actor }}
+
+            Pr title: ${{ github.event.pull_request.title }}
+
+            Pr description: ${{ github.event.pull_request.body }}
+            
+            🔗 [Коммит](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            
             🔄 Будь ласка, витягніть останні зміни:
             git checkout main && git pull origin main
