@@ -12,7 +12,17 @@ jobs:
   notifyTelegram:
     runs-on: ubuntu-latest
     steps:
+      - name: Check if push is not from merge commit
+        id: check_merge
+        run: |
+          if [[ "${{ github.event.head_commit.message }}" == *"Merge pull request"* ]]; then
+            echo "MERGE_COMMIT=true" >> $GITHUB_ENV
+          else
+            echo "MERGE_COMMIT=false" >> $GITHUB_ENV
+          fi
+      
       - name: Send Telegram Notification
+        if: env.MERGE_COMMIT == 'false'
         uses: appleboy/telegram-action@master
         with:
           to: "${{ secrets.TELEGRAM_CHAT_ID }}"
@@ -23,12 +33,9 @@ jobs:
             👤 Действие: ${{ github.event_name }}
             
             ✍️ Автор: ${{ github.actor }}
-
+            
             Pr title: ${{ github.event.pull_request.title }}
-
+            
             Pr description: ${{ github.event.pull_request.body }}
             
             🔗 [Коммит](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
-            
-            🔄 Будь ласка, витягніть останні зміни:
-            git checkout main && git pull origin main
