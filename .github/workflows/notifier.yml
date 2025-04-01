@@ -20,6 +20,12 @@ jobs:
           else
             echo "MERGE_COMMIT=false" >> $GITHUB_ENV
           fi
+          
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "MESSAGE_TYPE=PR" >> $GITHUB_ENV
+          else
+            echo "MESSAGE_TYPE=COMMIT" >> $GITHUB_ENV
+          fi
       
       - name: Send Telegram Notification
         if: env.MERGE_COMMIT == 'false'
@@ -34,8 +40,6 @@ jobs:
             
             ✍️ Автор: ${{ github.actor }}
             
-            Pr title: ${{ github.event.pull_request.title }}
-            
-            Pr description: ${{ github.event.pull_request.body }}
+            ${{ env.MESSAGE_TYPE == 'PR' && format('📌 PR Title: {0}\n📝 PR Description: {1}', github.event.pull_request.title, github.event.pull_request.body) || format('📝 Commit Title: {0}', github.event.head_commit.message) }}
             
             🔗 [Коммит](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
